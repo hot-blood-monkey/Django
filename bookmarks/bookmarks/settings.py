@@ -9,12 +9,20 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
+# -*- coding: utf-8 -*-
 import os
+
+#from django.urls import reverse_lazy
+from django.core.urlresolvers import reverse_lazy
+
+LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGIN_URL = reverse_lazy('login')
+LOGOUT_URL = reverse_lazy('logout')
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+#AUTH_USER_MODEL = 'account.UserSocialAuth'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -27,6 +35,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#管理用户上传的多媒体文件
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
 
 # Application definition
 
@@ -38,14 +51,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',#社交认证
+    'social_django',
+    'images',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -122,3 +139,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+EMAIL_BACKEND ='django.core.mail.backends.console.EmailBackend'
+
+#   认证
+AUTHENTICATION_BACKENDS = (
+   'django.contrib.auth.backends.ModelBackend',
+   'account.authentication.EmailAuthBackend',
+
+   'social.backends.twitter.TwitterOAuth',
+   'social.backends.facebook.FacebookOAuth2',
+   'social.backends.google.GoogleOAuth2',
+)
+
+# twitter 认证
+SOCIAL_AUTH_TWITTER_KEY = 'zwUvMG1mKnDVJBUYiZyIvkwDI'
+SOCIAL_AUTH_TWITTER_SECRET = 'NiJ1QO2DKjNwL0b7NQ9dQa4xaQMo5MQBQcdRhBF1V2PoGWJ9D9'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '693726075902-s9ul1veqgoco4dn4kl4lg3ikql2vbh70.apps.googleusercontent.com' # Google Consumer Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'tiztrR_02JSKOZ6J-X46Cx6_' # Google Consumer Secret
