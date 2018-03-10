@@ -29,7 +29,7 @@ from .models import Image
 class ImageCreateForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = ('title','url','description')
+        fields = ('title', 'url', 'description')
         widgets = {'url':forms.HiddenInput}
 
     def clean_url(self):
@@ -43,8 +43,7 @@ class ImageCreateForm(forms.ModelForm):
     def save(self, force_insert=False, force_update=False, commit=True):
         image = super(ImageCreateForm, self).save(commit=False)
         image_url = self.cleaned_data['url']
-        image_name = '{}.{}'.format(slugify(image.title)),
-        image_url.rsplit('.',1)[1].lower()
+        image_name = '{}.{}'.format(slugify(image.title), image_url.rsplit('.',1)[1].lower())
 
         #给定url中下载图片
         response = request.urlopen(image_url)
