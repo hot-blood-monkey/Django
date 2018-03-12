@@ -46,4 +46,5 @@ urlpatterns = [
     #编辑他们的pfofile
     url(r'^edit/$', views.edit, name='edit'),
 
+
 ]
