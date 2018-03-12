@@ -160,3 +160,10 @@ SOCIAL_AUTH_TWITTER_SECRET = 'NiJ1QO2DKjNwL0b7NQ9dQa4xaQMo5MQBQcdRhBF1V2PoGWJ9D9
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '693726075902-s9ul1veqgoco4dn4kl4lg3ikql2vbh70.apps.googleusercontent.com' # Google Consumer Key
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'tiztrR_02JSKOZ6J-X46Cx6_' # Google Consumer Secret
+
+
+#Django会为设置中的模型（models）动态添加一个get_absolute_url()方法
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail',
+                                        args=[u.username])
+}
