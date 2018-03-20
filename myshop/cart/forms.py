@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+__title__ = ''
+__author__ = 'Administrator'
+__mtime__ = '2018/3/19'
+# code is far away from bugs with the god animal protecting
+    I love animals. They taste delicious.
+              ┏┓      ┏┓
+            ┏┛┻━━━┛┻┓
+            ┃      ☃      ┃
+            ┃  ┳┛  ┗┳  ┃
+            ┃      ┻      ┃
+            ┗━┓      ┏━┛
+                ┃      ┗━━━┓
+                ┃  神兽保佑    ┣┓
+                ┃　永无BUG！   ┏┛
+                ┗┓┓┏━┳┓┏┛
+                  ┃┫┫  ┃┫┫
+                  ┗┻┛  ┗┻┛
+"""
+
+from django import forms
+
+
+PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, 21)]
+
+
+class CartAddProductForm(forms.Form):
+    quantity = forms.TypedChoiceField(
+                choices=PRODUCT_QUANTITY_CHOICES,
+                coerce=int)
+    #quantity：让用户可以在 1~20 之间选择产品的数量。我们使用了带有 coerce=int 的 TypeChoiceField 字段来把输入转换为整数
+
+
+    update = forms.BooleanField(required=False,
+                initial=False,
+                widget=forms.HiddenInput)
