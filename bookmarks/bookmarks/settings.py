@@ -93,6 +93,9 @@ WSGI_APPLICATION = 'bookmarks.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -139,9 +142,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-
+STATIC_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
-
+STATICFILES_DIRS = (
+    ('css',os.path.join(STATIC_ROOT,'css').replace('\\','/')),
+    ('images',os.path.join(STATIC_ROOT,'images').replace('\\','/')),
+)
 
 EMAIL_BACKEND ='django.core.mail.backends.console.EmailBackend'
 
@@ -174,3 +180,7 @@ ABSOLUTE_URL_OVERRIDES = {
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
+
+
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
