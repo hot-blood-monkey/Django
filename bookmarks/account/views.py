@@ -40,7 +40,7 @@ def user_login(request):
 @login_required
 def dashboard(request):
     #展示默认的行为
-    actions = Action.objects.exclude(user=request.user)
+    actions = Action.objects.all().exclude(user=request.user)
     following_ids = request.user.following.values_list('id',flat=True)
     if following_ids:
         actions = actions.filter(user_id__in=following_ids.select_related('user','user__profile').prefetch_related('target'))
@@ -65,7 +65,7 @@ def register(request):
             profile = Profile.objects.create(user=new_user)
 
             # 添加用户行为
-            create_action(request.user,'已经创建一个用户')
+            create_action(new_user,'已经创建一个用户')
             return render(request,'account/register_done.html',{'new_user':new_user})
     else:
         user_form = UserRegistrationForm()

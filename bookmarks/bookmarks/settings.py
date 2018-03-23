@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'images',
     'sorl.thumbnail',
     'actions',
+    'door',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -67,6 +68,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'bookmarks.urls'
@@ -140,16 +142,22 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
-STATIC_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    ('css',os.path.join(STATIC_ROOT,'css').replace('\\','/')),
-    ('images',os.path.join(STATIC_ROOT,'images').replace('\\','/')),
-)
+#Django静态文件设置
 
-EMAIL_BACKEND ='django.core.mail.backends.console.EmailBackend'
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+                    os.path.join(PROJECT_ROOT, 'static'),
+                    )
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+
+
+#邮件认证后台执行
+#EMAIL_BACKEND ='django.core.mail.backends.console.EmailBackend'
 
 #   认证
 AUTHENTICATION_BACKENDS = (
@@ -177,9 +185,18 @@ ABSOLUTE_URL_OVERRIDES = {
 
 
 #redis数据库设计
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 0
+# REDIS_HOST = 'localhost'
+# REDIS_PORT = 6379
+# REDIS_DB = 0
+
+#smtp 邮箱设置
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_HOST_USER = '290322402@qq.com'
+EMAIL_HOST_PASSWORD = 'ivkpnwugrsmebggf'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
 
 
 import dj_database_url

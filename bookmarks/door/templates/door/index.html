@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %} Dashboard {% endblock %}
+{% block content %}
+  <h1>Dashboard</h1>
+  {% with total_images_created=request.user.images_created.count %}
+        <p>欢迎来到你的 dashboard. 你可以分享 {{ total_images_created }} 图片{{ total_images_created|pluralize }} .</p>
+    {% endwith %}
+
+   {{ said }}
+
+{% endblock %}
