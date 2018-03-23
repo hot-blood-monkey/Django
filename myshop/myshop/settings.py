@@ -130,3 +130,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 #这个键将会用于我们的会话中来储存购物车
 CART_SESSION_ID = 'cart'
+
+
+#smtp 邮箱设置
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_HOST_USER = '290322402@qq.com'
+EMAIL_HOST_PASSWORD = 'ivkpnwugrsmebggf'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

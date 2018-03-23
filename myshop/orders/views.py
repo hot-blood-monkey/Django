@@ -7,7 +7,7 @@ from django.shortcuts import render
 from cart.cart import Cart
 from .forms import OrderCreateForm
 from .models import OrderItem
-
+from .task import order_created
 
 def order_create(request):
     #获取到当前会话中的购物车
@@ -25,7 +25,9 @@ def order_create(request):
 
                 #清空购物车
                 cart.clear()
-                #order_created.delay(order.id)
+
+                #调用异步任务
+                order_created.delay(order.id)
                 return render(request,
                               'orders/order/created.html',
                               {'order':order})
@@ -35,3 +37,5 @@ def order_create(request):
     return render(request,
                   'orders/order/create.html',
                   {'cart':cart,'form':form})
+
+
