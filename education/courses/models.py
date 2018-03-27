@@ -2,9 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.template.loader import render_to_string
 
+from .field import OrderField
 
 # Create your models here.
+
+
+
+
+
 
 class Subject(models.Model):
     title = models.CharField(max_length=200)
@@ -27,6 +34,8 @@ class Course(models.Model):
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
 
+    students = models.ManyToManyField(User,related_name='courses_joined', blank=True)
+
     class Meta:
         ordering = ('-created',)
 
@@ -39,20 +48,26 @@ class Module(models.Model):
                                on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
+    order = OrderField(blank=True, for_fields=['course'])
 
     def __str__(self):
-        return self.title
+        return '{}.{}'.format(self.order, self.title)
+
 
 
 class Content(models.Model):
     module = models.ForeignKey(Module, related_name='contents', on_delete=models.CASCADE)
 
     content_type = models.ForeignKey(ContentType,limit_choices_to={
-        'model__in':('text','video','image','file',)
-    },on_delete=models.CASCADE)
+                                        'model__in':('text','video','image','file',)},
+                                     on_delete=models.CASCADE)
 
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')
+    order = OrderField(blank=True, for_fields=['module'])
+
+    class Meta:
+        ordering = ['order']
 
 
 
@@ -67,6 +82,12 @@ class ItemBase(models.Model):
 
     def __str__(self):
         return self.title
+
+    def render(self):
+        return render_to_string('courses/content/{}.html'.format(self._meta.model_name,{'item':self}))
+
+
+
 
 class Text(ItemBase):
     content = models.TextField()
